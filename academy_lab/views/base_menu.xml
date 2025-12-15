@@ -1,14 +1,19 @@
 <odoo>
-    <menuitem id="academy_menu" name="Academy"/>
+    <menuitem id="academy_menu" 
+              name="Academy"/>
     <!-- courses -->
-    <menuitem id="academy_courses" name="Courses" parent="academy_menu"/>
+    <menuitem id="academy_courses" 
+        name="Courses" 
+        parent="academy_menu"/>
     
-    <!-- <menuitem id="academy_courses_categories" name="Categories" parent="academy_courses"/> -->
     <!-- enrollments -->
-    <!-- <menuitem id="academy_enrollments" name="Enrollments" parent="academy_menu"/>
-    <menuitem id="academy_all_enrollments" name="All Enrollments" parent="academy_enrollments"/>
-    <menuitem id="academy_my_enrollments" name="My Enrollments" parent="academy_enrollments"/>
-
-    <menuitem id="academy_configs" name="Configurations" parent="academy_menu"/> -->
+    <menuitem id="academy_enrollments" 
+              name="Enrollments" 
+              parent="academy_menu"/>
+   
+    <menuitem id="academy_configs" 
+              name="Configurations" 
+              parent="academy_menu"
+              groups="academy_lab.group_manager"/>
 
 </odoo>

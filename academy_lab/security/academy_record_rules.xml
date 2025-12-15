@@ -6,6 +6,9 @@
         <field name="groups" eval="[(4, ref('academy_lab.group_student'))]"/>
         <field name="domain_force">[('state', '=', 'published')]</field>
         <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
     </record>
 
     <!-- Students: only own enrollments -->
@@ -17,6 +20,8 @@
         <field name="perm_read" eval="1"/>
         <field name="perm_write" eval="1"/>
         <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+
     </record>
 
     <!-- Instructors: read-only enrollments -->
@@ -29,6 +34,16 @@
         <field name="perm_create" eval="0"/>
         <field name="perm_unlink" eval="0"/>
     </record>
+    
+    <record id="rule_manager_enrollment" model="ir.rule">
+        <field name="name">academy.enrollment: manager: all</field>
+        <field name="model_id" ref="model_academy_enrollment"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('academy_lab.group_manager'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
 
-    <!-- Managers: full access is handled by access rights above -->
 </odoo>

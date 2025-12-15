@@ -10,6 +10,8 @@
         'security/academy_record_rules.xml',
         'views/base_menu.xml',
         'views/course_views.xml',
+        'views/category_views.xml',
+        'views/enrollment_views.xml',
 
     ],
     'application': True,          
