@@ -1,0 +1,65 @@
+<odoo>
+    <!-- Inherit Partner Form -->
+    <record id="view_res_partner_form_academy" model="ir.ui.view">
+        <field name="name">res.partner.form.academy</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <!-- smart buttons below the name -->
+            <xpath expr="//header" position="inside">
+                <button name="%(action_courses_enrolled)d"
+                        type="action"
+                        string="Enrolled Courses"
+                        class="oe_stat_button"
+                        icon="fa-book"
+                        context="{'default_partner_id': active_id}">
+                    <field name="total_courses_enrolled" widget="statinfo" string="Enrolled Courses"/>
+                </button>
+                <button name="%(action_courses_teaching)d"
+                        type="action"
+                        string="Teaching Courses"
+                        class="oe_stat_button"
+                        icon="fa-graduation-cap"
+                        context="{'default_partner_id': active_id}">
+                    <field name="total_courses_teaching" widget="statinfo" string="Teaching Courses"/>
+                </button>
+            </xpath>
+
+            <!-- Add Academy notebook page -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Academy">
+                    <group>
+                        <field name="is_student"/>
+                        <field name="is_instructor"/>
+                    </group>
+
+                    <group>
+                        <label string="Student Enrollments"/>
+                        <field name="student_enrollment_ids">
+                            <list editable="bottom">
+                                <field name="course_id"/>
+                                <field name="state"/>
+                                <field name="grade"/>
+                                <field name="attendance_percentage"/>
+                            </list>
+                        </field>
+                    </group>
+
+                    <group>
+                        <label string="Courses Teaching"/>
+                        <field name="instructor_course_ids">
+                            <list editable="bottom">
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="state"/>
+                                <field name="available_seats"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
