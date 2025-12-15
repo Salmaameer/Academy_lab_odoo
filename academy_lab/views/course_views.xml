@@ -1,0 +1,154 @@
+<odoo>
+    <!-- Search View -->
+     <record id="view_academy_course_search" model="ir.ui.view">
+        <field name="name">academy.course.search</field>
+        <field name="model">academy.course</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="state"/>
+                <field name="instructor_id"/>
+                <filter name="published" string="Published" domain="[('state','=','published')]"/>
+                <filter name="in_progress" string="In Progress" domain="[('state','=','in_progress')]"/>
+                <filter name="full" string="Full Courses" domain="[('is_full','=',True)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="State" context="{'group_by':'state'}"/>
+                    <filter name="group_instructor" string="Instructor" context="{'group_by':'instructor_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- List view  -->
+    <record id="view_academy_course_list" model='ir.ui.view'>
+        <field name="name">academy.course.list</field>
+        <field name="model">academy.course</field>
+        <field name="arch" type="xml">
+            <list
+                decoration-success="state == 'done'"
+                decoration-warning="state == 'in_progress'"
+                decoration-info="state == 'published'"
+                decoration-danger="state == 'cancelled' or is_full">
+
+
+                <field name="name" />
+                <field name="code" />
+                <field name="instructor_id" />
+                <field name="state" />
+                <field name="enrolled_count" />
+                <field name="available_seats" />
+            </list>
+
+        </field>
+
+    </record>
+
+
+    <!-- From view -->
+
+    <record id="view_academy_course_form" model="ir.ui.view">
+        <field name="name">academy.course.form</field>
+        <field name="model">academy.course</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!-- Statusbar -->
+                    <field name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,published,in_progress,done,cancelled" />
+
+                    <!-- Publish button: visible only in 'draft' -->
+                    <button name="action_publish"
+                        type="object"
+                        string="Publish"
+                        class="btn-primary"
+                        modifiers="{'invisible': [('state','!=','draft')]}" />
+
+                    <!-- Start button: visible only in 'published' -->
+                    <button name="action_start"
+                        type="object"
+                        string="Start"
+                        class="btn-primary"
+                        modifiers="{'invisible': [('state','!=','published')]}" />
+
+                    <!-- Complete button: visible only in 'in_progress' -->
+                    <button name="action_complete"
+                        type="object"
+                        string="Done"
+                        class="btn-primary"
+                        modifiers="{'invisible': [('state','!=','in_progress')]}" />
+
+                    <!-- Cancel button: visible in 'draft' or 'published' -->
+                    <button name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        class="btn-primary"
+                        modifiers="{'invisible': [('state','not in',['draft','published'])]}" />
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_show_enrollments"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-users">
+                            <field name="enrolled_count" widget="statinfo"
+                                string="Enrollments" />
+                        </button>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="code" />
+                            <field name="category_id" />
+                            <field name="instructor_id" />
+                        </group>
+
+                        <group>
+                            <field name="max_students" />
+                            <field name="enrolled_count" readonly="1" />
+                            <field name="available_seats" readonly="1" />
+                            <field name="is_full" readonly="1" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" />
+                        </page>
+
+                        <page string="Enrollments">
+                            <field name="enrollment_ids">
+                                <list>
+                                    <field name="student_id" />
+                                    <field name="state" />
+                                    <field name="grade" />
+                                    <field name="attendance_percentage" />
+                                </list>
+
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+
+        </field>
+
+    </record>
+    <record id="action_academy_courses" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="res_model">academy.course</field>
+        <field name="view_mode">list,form</field>
+
+    </record>
+
+    <menuitem id="academy_courses_courses" 
+              name="Courses" 
+              parent="academy_courses"
+              action="action_academy_courses" />
+
+</odoo>
