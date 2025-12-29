@@ -21,5 +21,5 @@ env/
 .idea/
 # Ignore specific Docker and Odoo configuration
 .DS_Store
-*.yml
-/config/
+docker-compose.yml
+config/
