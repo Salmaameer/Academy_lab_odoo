@@ -20,5 +20,6 @@ env/
 .vscode/
 .idea/
 # Ignore specific Docker and Odoo configuration
+.DS_Store
 *.yml
 /config/
