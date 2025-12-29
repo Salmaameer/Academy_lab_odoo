@@ -1,0 +1,21 @@
+# Python bytecode
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Odoo specific
+*.log
+/filestore/
+/sessions/
+
+# Docker & OS files
+.DS_Store
+Thumbs.db
+.env
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/

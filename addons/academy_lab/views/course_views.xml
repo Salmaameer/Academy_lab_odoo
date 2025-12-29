@@ -58,34 +58,42 @@
                     <field name="state"
                         widget="statusbar"
                         statusbar_visible="draft,published,in_progress,done,cancelled" />
-
+                    
                     <!-- Publish button: visible only in 'draft' -->
                     <button name="action_publish"
                         type="object"
                         string="Publish"
                         class="btn-primary"
-                        modifiers="{'invisible': [('state','!=','draft')]}" />
+                        invisible=" state != 'draft'"/>
 
                     <!-- Start button: visible only in 'published' -->
                     <button name="action_start"
                         type="object"
                         string="Start"
                         class="btn-primary"
-                        modifiers="{'invisible': [('state','!=','published')]}" />
+                        invisible=" state != 'published'" />
 
                     <!-- Complete button: visible only in 'in_progress' -->
                     <button name="action_complete"
                         type="object"
                         string="Done"
                         class="btn-primary"
-                        modifiers="{'invisible': [('state','!=','in_progress')]}" />
+                        invisible=" state != 'in_progress'" />
 
                     <!-- Cancel button: visible in 'draft' or 'published' -->
                     <button name="action_cancel"
                         type="object"
                         string="Cancel"
                         class="btn-primary"
-                        modifiers="{'invisible': [('state','not in',['draft','published'])]}" />
+                        invisible="state in ['in_progress','done','cancelled']" />
+
+                    <!-- product wizard button -->
+                     <button string='Generate product'
+                             name='action_open_sell_course_wizard'
+                             type='object'
+                             class='btn-primary'/>    
+
+                
                 </header>
 
                 <sheet>
@@ -134,7 +142,7 @@
                     </notebook>
 
                 </sheet>
-                <chatter/>
+                            <chatter/>
 
             </form>
 
@@ -176,8 +184,26 @@
         </field>
     </record>
 
+                    <!-- sales smart button-->
 
+    <record id='academy_course_form_view_sales' model='ir.ui.view'>
+        <field name='name'>academy.course.from.sales.button</field>
+        <field name='model'>academy.course</field>
+        <field name='inherit_id' ref='academy_lab.view_academy_course_form'/>
+        <field name='arch' type='xml'>
 
+            <xpath expr="//div[@class='oe_button_box']" position='inside'>
+                <button name='action_list_sale_orders'
+                        class='oe_stat_button'
+                        type='object'
+                        icon='fa-shopping-cart'
+                        >
+                        <span class="o_stat_text">Sales</span>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
 
     <record id="action_academy_courses" model="ir.actions.act_window">
         <field name="name">Courses</field>

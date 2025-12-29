@@ -29,8 +29,11 @@ class Course(models.Model):
     end_date = fields.Date(tracking=True)
     enrollment_ids = fields.One2many('academy.enrollment', 'course_id', string='Enrollments')
 
+    #wizard field
+    product_id = fields.Many2one('product.product', readonly=True)
+
     #computed fields
-    enrolled_count = fields.Integer(compute='_compute_enrolled_count', store=True)
+    enrolled_count = fields.Integer(compute='_compute_enrolled_count', store=True) 
     available_seats = fields.Integer(compute='_compute_available_seats', store=True)
     is_full = fields.Boolean(compute='_compute_is_full', store=True)
     
@@ -43,16 +46,19 @@ class Course(models.Model):
         ("unique_code", "unique(code)", "Code must be unique!"),
     ]
 
-    @api.depends('enrollment_ids')
+    @api.depends('enrollment_ids.state')
     def _compute_enrolled_count(self):
         for rec in self:
             #count only when state is confirmed
             rec.enrolled_count = len(rec.enrollment_ids.filtered(lambda e: e.state == 'confirmed'))
+            print("Enrolled count computed:", rec.enrolled_count)
 
-    @api.depends('max_students', 'enrolled_count')
+    @api.depends('max_students', 'enrollment_ids.state')
     def _compute_available_seats(self):
         for rec in self:
-            rec.available_seats = rec.max_students - rec.enrolled_count
+            print("Computing available seats for course:", rec.available_seats)
+            confirmed_enrollments = len(rec.enrollment_ids.filtered(lambda e: e.state == 'confirmed'))
+            rec.available_seats = rec.max_students - confirmed_enrollments
 
     @api.depends('available_seats')
     def _compute_is_full(self):
@@ -69,7 +75,7 @@ class Course(models.Model):
     @api.constrains('start_date', 'end_date')
     def _check_dates(self):
         for rec in self:
-            if rec.start_date and rec.end_data and rer.start_date > rec.end_date:
+            if rec.start_date and rec.end_date and rec.start_date > rec.end_date:
                 raise ValidationError("Start date must be before end date")
 
     @api.constrains('max_students')
@@ -77,6 +83,24 @@ class Course(models.Model):
         for rec in self:
             if rec.max_students <= 0 :
                 raise ValidationError("Max Students must be greater than 0")
+
+    #auto convert the code to uppercase
+    @api.onchange('code')
+    def _onchange_code_uppercase(self):
+        if self.code:
+            self.code = self.code.upper()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('code'):
+                vals['code'] = vals['code'].upper()
+        return super().create(vals_list)   
+
+    def write(self, vals):
+        if vals.get('code'):
+            vals['code'] = vals['code'].upper()
+        return super().write(vals)    
 
 
     def action_publish(self):
@@ -103,11 +127,9 @@ class Course(models.Model):
     #it should depends on the logic if all states could be cancelled or not
     def action_cancel(self):
         for rec in self:
-            if rec.state in ['in_progress','done']:
+            if rec.state in ['in_progress','done','cancelled']:
                 raise ValidationError("In-progress courses cannot be cancelled.")
             rec.state = 'cancelled'
-            #reset available seats when cancelled
-            rec.available_seats = rec.max_students
 
 
     def action_show_enrollments(self):
@@ -116,6 +138,33 @@ class Course(models.Model):
             'name': 'Enrollments',
             'type': 'ir.actions.act_window',
             'res_model': 'academy.enrollment',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('course_id','=', self.id)],
+            'context': {
+                'default_course_id': self.id,
+                'create': True,
+                },
         }
+
+
+    def action_open_sell_course_wizard(self):
+        action = self.env['ir.actions.actions']._for_xml_id('academy_lab.sell_course_wizard_action')
+        action['context'] = {'default_name':self.name , 
+                             'active_id': self.id} #pass the current course name 
+        
+        return action 
+    
+    def action_list_sale_orders(self):
+        self.ensure_one()
+
+        return {
+            'type':'ir.actions.act_window',
+            'name': 'Sale Orders',
+            'res_model': 'sale.order',
+            'view_mode': 'list,form',
+            'domain':[
+                ('order_line.product_id', '=' , self.product_id.id)
+            ],
+            'context':{'create': False}
+        }
+    

@@ -21,9 +21,14 @@ class Enrollment(models.Model):
     grade = fields.Float(string='Grade')
     attendance_percentage = fields.Float(string="Attendance (%)")  # value 0-100
     notes = fields.Text()
+    
     #related fields
     student_name = fields.Char(related='student_id.name', store=True)
     course_name = fields.Char(related='course_id.name', store=True)
+    course_code = fields.Char(related='course_id.code', store=True)
+
+    #wizard_fields
+    invoice_id = fields.Many2one('account.move', readonly=True)
 
     #computed fields
     passed = fields.Boolean(
@@ -44,13 +49,13 @@ class Enrollment(models.Model):
             if rec.grade < 0 or rec.grade > 100:
                 raise ValueError("Grade must be between 0 and 100")
 
-    @api.constrains('course_id','state')
-    def _check_course_seates_availability(self):
-        for rec in self:
-            if rec.state == 'confirmed' and rec.course_id.available_seats <= 0:
-                raise ValidationError(
-                    f"No available seats in course '{rec.course_id.name}'!"
-                )
+    # @api.constrains('course_id','state')
+    # def _check_course_seates_availability(self):
+    #     for rec in self:
+    #         if rec.course_id.available_seats == 0 :
+    #             raise ValidationError(
+    #                 f"No available seats in course '{rec.course_id.code}'!"
+    #             )
 
 
     @api.depends('grade', 'attendance_percentage')
@@ -65,18 +70,21 @@ class Enrollment(models.Model):
 
     def action_confirm(self):
         for enrollmnt in self:
-            if enrollmnt.course_id.available_seats <= 0:
-                raise ValidationError(f"No available seats in course '{enrollmnt.course_id.name}'!")
+            if enrollmnt.state != 'draft': 
+                raise ValidationError("Cannot confirm the enrollment !")
+            
+            confirmed_enrolls = len(enrollmnt.course_id.enrollment_ids.filtered(lambda e:e.state == 'confirmed'))
+
+            if confirmed_enrolls >= enrollmnt.course_id.max_students:
+                raise ValidationError("Cannot confirm enrollment. No available seats in the course.")
             enrollmnt.state = 'confirmed'
-            enrollmnt.course_id.available_seats -= 1
 
 
     def action_cancel(self):
         for enrollmnt in self:
-            if enrollmnt.state != 'confirmed':
+            if enrollmnt.state not in  ['confirmed','draft']:
                 raise ValidationError("Only confirmed enrollments can be cancelled.")
             enrollmnt.state = 'cancelled'
-            enrollmnt.course_id.available_seats += 1        
 
 
     def action_complete(self):
@@ -84,3 +92,18 @@ class Enrollment(models.Model):
             if enrollmnt.state != 'confirmed':
                 raise ValidationError("Only confirmed enrollments can be completed.")
             enrollmnt.state = 'completed'      
+
+
+    def action_view_invoices(self):
+        self.ensure_one()
+        if not self.invoice_id.id:
+            raise ValidationError("No invoices there")
+        return {
+            "type" : 'ir.actions.act_window',
+            "name": "Invoices",
+            "res_model" : "account.move",
+            "view_mode" : "list,form",
+            "domain" : [
+                ("id" , '=' ,self.invoice_id.id)
+            ]
+        }        

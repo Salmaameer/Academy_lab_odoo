@@ -11,6 +11,7 @@
                 decoration-danger="state == 'cancelled'">
                 <field name="student_id"/>
                 <field name="course_id"/>
+                <field name="course_code"/>
                 <field name="enrollment_date"/>
                 <field name="state"/>
                 <field name="grade"/>
@@ -149,6 +150,27 @@
             </form>
         </field>
     </record>
+    <!-- Invoices smart button-->
+     <record id="view_related_invoices" model="ir.ui.view">
+        <field name="name">academy.course.invoices</field>
+        <field name="model">academy.enrollment</field>
+        <field name="inherit_id" ref="academy_lab.view_academy_enrollment_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button type="object"
+                            name="action_view_invoices"
+                            class="oe_stat_button"
+                            icon="fa-file-invoice"
+                    >
+                        <span class="oe_stat_text">Invoices</span>
+                    </button>
+                </div>
+            </xpath>
+
+        </field>
+     </record>
 
     <record id="action_academy_all_enrollment" model="ir.actions.act_window">
         <field name="name">All Enrollments</field>

@@ -1,1 +1,0 @@
-# Academy_lab_odoo

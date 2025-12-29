@@ -3,7 +3,7 @@
     'author': "Salma Ameer",
     'category': "",
     'version': "18.0.1.0.0",
-    'depends': ['base', 'mail' , 'contacts'],
+    'depends': ['base','mail','contacts','sale','account'],
     'data': [
         'security/academy_security.xml',
         'security/ir.model.access.csv',
@@ -14,8 +14,8 @@
         'views/category_views.xml',
         'views/enrollment_views.xml',
         'views/res_partner_views.xml',
+        'wizard/sell_course_wizard_view.xml',
 
     ],
-    'application': True,          
-
+    'application': True, 
 }
