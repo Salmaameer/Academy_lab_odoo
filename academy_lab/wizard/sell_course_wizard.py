@@ -24,29 +24,17 @@ class SellCourse(models.TransientModel):
         if not course.exists():
             raise ValidationError("The course record no longer exists.")
         
-        # income_account = self.env['account.account'].search([    ('code', '=', '400000'),    ('company_id', '=', 1)], limit=1)
-        # if not income_account:    
-        #     # Create income account if it doesn't exist   
-        income_account = self.env['account.account'].create({        
-            'code': '400000',        
-            'name': 'Product Sales',        
-            'account_type': 'income', })
-             
+        if self.price <= 0 :
+            raise ValidationError("Course price must be greater than 0")
+
         product = self.env['product.product'].create({
             'name': self.name,
             'list_price': self.price,
             'type': 'service',
             'course_id': course.id,
-            'property_account_income_id': income_account.id if income_account else False,
         })
 
-        # product = self.env['product.product'].create({
-        #     'type': 'service',
-        #     'name': self.name,
-        #     'list_price': self.price,
-        #     'course_id': course.id,
-            
-        # })
+        
         _logger.info("Product created %s", product.name)
 
         course.product_id = product.id

@@ -162,7 +162,8 @@
                     <button type="object"
                             name="action_view_invoices"
                             class="oe_stat_button"
-                            icon="fa-file-invoice"
+                            icon="fa-file-text-o"
+                            invisible="not invoice_id"
                     >
                         <span class="oe_stat_text">Invoices</span>
                     </button>

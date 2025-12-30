@@ -6,7 +6,7 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     def action_post(self):
-        res = super(AccountMove).action_post()
+        res = super().action_post()
 
         for move in self:
 
@@ -16,7 +16,7 @@ class AccountMove(models.Model):
                     continue
 
                 course = product.course_id
-                student = product.partner_id
+                student = move.partner_id
 
                 #check no duplicate enrollments
                 enrollmnt = self.env['academy.enrollment'].search([
