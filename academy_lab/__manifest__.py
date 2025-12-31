@@ -12,9 +12,15 @@
         'views/base_menu.xml',
         'views/course_views.xml',
         'views/category_views.xml',
+        'reports/enrollment_report_actions.xml',
         'views/enrollment_views.xml',
         'views/res_partner_views.xml',
+
         'wizard/sell_course_wizard_view.xml',
+
+        'reports/course_report_actions.xml',
+        'reports/course_report_templates.xml',
+        'reports/enrollment_report_templates.xml',
 
     ],
     'application': True, 

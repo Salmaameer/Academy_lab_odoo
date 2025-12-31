@@ -1,0 +1,11 @@
+<odoo>
+    <record id="course_certificate_report_action" model="ir.actions.report">
+        <field name="name">Course certificate</field>
+        <field name="model">academy.enrollment</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">academy_lab.course_certificate_template</field> 
+        <field name="binding_model_id"  ref="academy_lab.model_academy_enrollment"/>
+        <field name="binding_type">report</field> 
+        <field name="print_report_name">'%s - Course certificate'%(object.student_id.name)</field>
+    </record>
+</odoo>

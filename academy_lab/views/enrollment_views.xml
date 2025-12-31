@@ -167,6 +167,14 @@
                     >
                         <span class="oe_stat_text">Invoices</span>
                     </button>
+                    <button type="action"
+                            name="academy_lab.course_certificate_report_action"
+                            class="oe_stat_button"
+                            icon="fa-print"
+                            invisible="not (passed and state=='confirmed')"
+                    >
+                        <span class="oe_stat_text">Certificate</span>
+                    </button>
                 </div>
             </xpath>
 

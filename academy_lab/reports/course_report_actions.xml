@@ -1,0 +1,14 @@
+<odoo>
+    <record id="course_report" model="ir.actions.report">
+        <field name="name">Course Enrollment Report</field>
+        <field name="model">academy.course</field>
+        <field name="report_type">qweb-html</field> <!-- qweb-html for html types-->
+        <field name="print_report_name">'%s Enrollment report'%(object.code)</field>
+        <field name="binding_model_id" ref="academy_lab.model_academy_course" />
+        <field name="binding_type">report</field> <!-- to make separate button for 'print'-->
+        <field name="report_name">academy_lab.course_report_template</field>        <!-- takes the id of the
+        template that has the report sturcture , it should be prefix with the addon name-->
+    </record>
+
+    
+</odoo>

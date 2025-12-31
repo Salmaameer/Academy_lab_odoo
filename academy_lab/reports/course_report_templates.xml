@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="course_report_template">
+        <t t-call="web.html_container"> <!-- called in each template-->
+            <t t-call="web.external_layout"> <!-- handels adding headers and footer-->
+                <t t-foreach="docs" t-as="rec">
+                    <!-- could write any html-->
+                    <h1>Course report</h1>
+                    <!-- <style>
+                        /* table, th, td needs to be added as inline style for pdf report */
+                        table {
+                        width: 100%;
+                        border: 1px solid #b3adad;
+                        border-collapse: collapse;
+                        padding: 5px;
+                        page-break-inside: unset;
+                        }
+                        th {
+                        border: 1px solid #b3adad;
+                        text-align:center;
+                        padding: 5px;
+                        background: #f0f0f0;
+                        color: #313030;
+                        }
+                        td {
+                        border: 1px solid #b3adad;
+                        text-align: center;
+                        padding: 5px;
+                        background: #ffffff;
+                        color: #313030;
+                        }
+
+                        thead { display: table-header-group; }
+                        tfoot { display: table-footer-group; }
+                        tr { page-break-inside: avoid; }
+                        div, section, article { page-break-before: auto !important;
+                        page-break-after: auto !important; }
+
+                    </style> -->
+                    <table class="table">
+                        <thead>
+                            <th colspan="4" style="text-align: center">General Info</th>
+                        </thead>
+                        <tbody>
+                            <td>Name</td>
+                            <td><t t-esc="rec.name"/></td>
+
+                            <td>Code</td>
+                            <td><t t-esc="rec.code"/></td>
+                        </tbody>
+
+                        <thead>
+                            <th colspan="4" style="text-align: center">Addtional Information</th>
+                        </thead>
+                        <tbody>
+                            <td>Category</td>
+                            <td><span t-field="rec.category_id"/></td> <!-- with span and t-field it shows the field same as list or form view -->
+
+                            <td>Instructor</td>
+                            <td><t t-esc="rec.instructor_id.name"/></td>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <table class="table">
+                        <thead>
+                            <th>Student Name</th>
+                            <th>Grade</th>
+                            <th>Attendance%</th>
+                            <th>Status</th>
+                            <th>Enrollment Date</th>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="rec.enrollment_ids" t-as="enroll">
+                                <tr>
+                                    <td>
+                                        <t t-esc="enroll.student_id.name"/>
+                                    </td>
+                                    <td>
+                                        <strong t-field="enroll.grade"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="enroll.attendance_percentage"/>
+                                    </td>
+                                    <td>
+                                        
+                                        <span t-if="enroll.passed">Passed</span>
+                                        <span t-else="">Failed</span>
+
+                                    </td>
+                                    <td>
+                                        <span t-field="enroll.enrollment_date"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
