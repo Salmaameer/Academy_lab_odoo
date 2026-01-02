@@ -88,12 +88,16 @@
                         invisible="state in ['in_progress','done','cancelled']" />
 
                     <!-- product wizard button -->
-                     <button string='Generate product'
+                    <button string='Generate product'
                              name='action_open_sell_course_wizard'
                              type='object'
                              class='btn-primary'/>    
 
-                
+                    <button string="Enrollment Report (Date Filter)"
+                            name="action_open_filter_print_wizard"
+                            type='object'
+                            class="btn-primary"/>
+                            
                 </header>
 
                 <sheet>

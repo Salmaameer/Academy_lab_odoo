@@ -1,6 +1,6 @@
 <odoo>
     <record id='sell_course_wizard_form' model='ir.ui.view'>
-        <field name='name'>sell.course.wizard.from</field>
+        <field name='name'>sell.course.wizard.form</field>
         <field name='model'>academy.product.wizard</field>
         <field name='arch' type='xml'>
             <form>

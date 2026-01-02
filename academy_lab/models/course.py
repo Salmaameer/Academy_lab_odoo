@@ -6,7 +6,7 @@ class Course(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=1, tracking=True)
-    code = fields.Char(required=1, index=True) #uppercase conts
+    code = fields.Char(required=True, index=True) #uppercase conts
     description = fields.Text()
     instructor_id = fields.Many2one(
         'res.partner', string="Instructor"
@@ -168,3 +168,8 @@ class Course(models.Model):
             'context':{'create': False}
         }
     
+    def action_open_filter_print_wizard(self):
+        action = self.env['ir.actions.actions']._for_xml_id('academy_lab.print_filltered_enrollment_action')
+        action['context'] = { 'active_id': self.id} #pass the current course name 
+        
+        return action 

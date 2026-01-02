@@ -17,6 +17,7 @@
         'views/res_partner_views.xml',
 
         'wizard/sell_course_wizard_view.xml',
+        'wizard/print_enrollment_report_wizard_view.xml',
 
         'reports/course_report_actions.xml',
         'reports/course_report_templates.xml',
