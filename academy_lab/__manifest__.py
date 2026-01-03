@@ -14,6 +14,7 @@
         'views/category_views.xml',
         'reports/enrollment_report_actions.xml',
         'views/enrollment_views.xml',
+        'reports/student_transcript_actions.xml',
         'views/res_partner_views.xml',
 
         'wizard/sell_course_wizard_view.xml',
@@ -22,6 +23,7 @@
         'reports/course_report_actions.xml',
         'reports/course_report_templates.xml',
         'reports/enrollment_report_templates.xml',
+        'reports/student_transcript_template.xml',
 
     ],
     'application': True, 

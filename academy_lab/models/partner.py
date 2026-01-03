@@ -1,5 +1,5 @@
-from odoo import models, fields, api
-
+from odoo import models, fields, api,_
+from odoo.exceptions import ValidationError
 
 class Partner(models.Model):
     _inherit = 'res.partner'
@@ -41,3 +41,6 @@ class Partner(models.Model):
         for partner in self:
             partner.total_courses_teaching = len(partner.instructor_course_ids.filtered(lambda c: c.state not in ['draft','cancelled']))
             
+
+    # def action_print_transcript(self):
+    #     ValidationError(_("No enrollments found to print the transcripts "))

@@ -28,6 +28,10 @@
                     <group>
                         <field name="is_student" />
                         <field name="is_instructor" />
+                        <button string='Print Transcript' 
+                                name='academy_lab.student_transcript_report_action'
+                                type='action'
+                                class='btn-primary'/>
                     </group>
                     <notebook>
                     <page string="Student Enrollments">
