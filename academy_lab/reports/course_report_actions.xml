@@ -8,6 +8,7 @@
         <field name="binding_type">report</field> <!-- to make separate button for 'print'-->
         <field name="report_name">academy_lab.course_report_template</field>        <!-- takes the id of the
         template that has the report sturcture , it should be prefix with the addon name-->
+        <field name="groups_id" eval="[(4, ref('academy_lab.group_instructor')),(4,ref('academy_lab.group_manager'))]"/>
     </record>
 
     

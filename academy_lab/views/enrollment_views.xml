@@ -171,7 +171,7 @@
                             name="academy_lab.course_certificate_report_action"
                             class="oe_stat_button"
                             icon="fa-print"
-                            invisible="not (passed and state=='confirmed')"
+                            invisible="not (passed and state=='completed')"
                     >
                         <span class="oe_stat_text">Certificate</span>
                     </button>

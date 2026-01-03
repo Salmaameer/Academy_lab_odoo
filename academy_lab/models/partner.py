@@ -30,6 +30,19 @@ class Partner(models.Model):
         string='Number of Courses Teaching',
         store=True )
 
+    # computed field used in the print transcript
+    is_own_partner= fields.Boolean(
+        string="Is own partner",
+        compute="_compute_is_own_parnter",
+        store=True,
+    )
+
+    @api.depends
+    def _compute_is_own_partner(self):
+        for partner in self: 
+            self.is_own_partner = (self.env.user.partner_id.id == partner.id)
+
+
     @api.depends('student_enrollment_ids')
     def _compute_courses_enrolled(self):
         for partner in self:

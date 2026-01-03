@@ -12,33 +12,33 @@
                         <table class="table table-bordered" style="width: 100%">
                             
                             <tr>
-                                <th >Student Name</th>
+                                <th style="text-align:center; font-weight:bold;">Student Name</th>
                                 <td >
                                     <span t-field="rec.student_id"/>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Course Name</th>
+                                <th style="text-align:center; font-weight:bold;">Course Name</th>
                                 <td>
                                     <span t-field="rec.course_id"/>
                                 </td>
 
                             </tr>
                             <tr>
-                                <th>Grade</th>
+                                <th style="text-align:center; font-weight:bold;">Grade</th>
                                 <td>
                                     <strong t-esc="rec.grade"/>
                                 </td>
 
                             </tr>
                              <tr>
-                                <th>Date</th>
+                                <th style="text-align:center; font-weight:bold;">Date</th>
                                 <td>
                                     <span t-esc="rec.enrollment_date"/>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Instructor</th>
+                                <th style="text-align:center; font-weight:bold;">Instructor</th>
                                 <td>
                                     <span t-field="rec.course_id.instructor_name"/>
                                 </td>

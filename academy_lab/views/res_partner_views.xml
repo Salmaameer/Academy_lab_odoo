@@ -31,7 +31,8 @@
                         <button string='Print Transcript' 
                                 name='academy_lab.student_transcript_report_action'
                                 type='action'
-                                class='btn-primary'/>
+                                class='btn-primary'
+                                invisible="not is_own_partner and not is_student"/>
                     </group>
                     <notebook>
                     <page string="Student Enrollments">
