@@ -170,6 +170,7 @@ class Course(models.Model):
     
     def action_open_filter_print_wizard(self):
         action = self.env['ir.actions.actions']._for_xml_id('academy_lab.print_filltered_enrollment_action')
-        action['context'] = { 'active_id': self.id} #pass the current course name 
+        action['context'] = { 'active_id': self.id,
+                              'filter_by': 'course'} #pass the current course name 
         
         return action 

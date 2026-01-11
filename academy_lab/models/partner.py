@@ -37,7 +37,6 @@ class Partner(models.Model):
         store=True,
     )
 
-    @api.depends
     def _compute_is_own_partner(self):
         for partner in self: 
             self.is_own_partner = (self.env.user.partner_id.id == partner.id)

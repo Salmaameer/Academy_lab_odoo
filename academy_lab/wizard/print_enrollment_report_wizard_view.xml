@@ -4,11 +4,16 @@
         <field name="model">academy.print.wizard</field>
         <field name="arch" type="xml">
             <form>
+                <!-- common for all models that using the wizard -->
             <group>
                 <field name="from_date"/>
                 <field name="to_date"/>
-                <field name="student_name"/>
             </group>
+
+            <group invisible="filter_by != 'enrollment'">
+                <field name="course_name"/>
+            </group>
+
 
             <footer>
                 <!-- <button string="Print" type="action" name="" class="btn-primary"/> -->
